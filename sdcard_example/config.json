@@ -1,0 +1,8 @@
+{
+  "ssid": "CardPutter-Games",
+  "pass": "",
+  "channel": 6,
+  "max_clients": 8,
+  "allow_guests": true,
+  "allow_register": true
+}

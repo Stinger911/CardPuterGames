@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Дуэль кликов</title>
+<style>
+body{margin:0;font-family:system-ui,sans-serif;background:#12151c;color:#e8eaf0;text-align:center}
+#btn{width:80vmin;height:80vmin;max-width:360px;max-height:360px;border-radius:50%;border:0;background:#3d7bff;color:#fff;font-size:28px;margin:20px auto;display:block}
+#btn:active{background:#2a5bd0}
+.s{font-size:20px;margin:6px}
+a{color:#8fb3ff}
+</style></head><body>
+<h2>Дуэль кликов</h2>
+<div class="s" id="you">Вы: 0</div>
+<div class="s" id="opp"></div>
+<button id="btn">КЛИК!</button>
+<div id="msg" class="s"></div>
+<a href="/">← В меню</a>
+<script src="/sdk.js"></script>
+<script>
+var GOAL=30,mine=0,theirs=0,over=false;
+function $(i){return document.getElementById(i)}
+function draw(){
+  $('you').textContent='Вы: '+mine+' / '+GOAL;
+  if(CP.room)$('opp').textContent='Соперник: '+theirs+' / '+GOAL;
+}
+function finish(win){over=true;$('msg').textContent=win?'🏆 Победа!':'Соперник был быстрее'}
+if(CP.room){
+  CP.on('msg',function(m){
+    if(over)return;
+    theirs=m.d.c;draw();
+    if(theirs>=GOAL)finish(false);
+  });
+  CP.connect();
+}
+$('btn').onclick=function(){
+  if(over)return;
+  mine++;draw();
+  if(CP.room)CP.send({c:mine});
+  if(mine>=GOAL)finish(true);
+};
+draw();
+</script></body></html>
