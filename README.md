@@ -6,8 +6,9 @@ Cardputer поднимает Wi-Fi точку доступа, на любой т
 
 ## Сборка и прошивка
 
-1. Установить [PlatformIO](https://platformio.org/).
-2. `pio run -t upload` (плата `m5stack-stamps3`, Cardputer подключён по USB).
+1. Нужен ESP-IDF 5.4 (`. ~/Work/esp/esp-idf/export.sh`; как в m5sPlaud).
+2. `make build`, затем `make flash [PORT=/dev/cu.usbmodemXXXX]` (если порт занят — зажать G0 при подключении кабеля), `make monitor`.
+   Образ для M5Stack Launcher: `make launcher-image [SD=/Volumes/...]` (кладёт `cardputer_games.bin` в `/downloads`).
 3. Скопировать содержимое `sdcard_example/` в корень SD-карты (FAT32) — на карте появится папка `/l18games`.
 
 ## Структура SD-карты

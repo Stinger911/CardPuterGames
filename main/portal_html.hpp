@@ -1,6 +1,6 @@
 #pragma once
 // Встроенная страница captive portal. Если на SD есть /www/index.html — используется он.
-static const char PORTAL_HTML[] PROGMEM = R"HTML(<!doctype html>
+static const char PORTAL_HTML[] = R"HTML(<!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CardPutter Games</title>

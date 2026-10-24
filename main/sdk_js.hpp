@@ -1,6 +1,6 @@
 #pragma once
 // JS SDK, отдаётся по /sdk.js. Игры на SD подключают его: <script src="/sdk.js"></script>
-static const char SDK_JS[] PROGMEM = R"JS(
+static const char SDK_JS[] = R"JS(
 (function(){
 var P=new URLSearchParams(location.search);
 var tok=P.get('t')||'';
