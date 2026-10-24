@@ -70,7 +70,7 @@ static bool validName(const String& n) {
 static String userPath(const String& name) {
   String l = name;
   l.toLowerCase();
-  return "/data/users/" + l + ".json";
+  return SD_ROOT "/data/users/" + l + ".json";
 }
 
 // ---------- пользователи ----------

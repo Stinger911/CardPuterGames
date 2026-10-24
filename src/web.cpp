@@ -95,8 +95,8 @@ static void addJson(const char* uri, JsonFn fn) {
 void webBegin() {
   // --- страница портала и SDK ---
   server.on("/", HTTP_GET, [](AsyncWebServerRequest* r) {
-    if (sdOk() && SD.exists("/www/index.html")) {
-      r->send(SD, "/www/index.html", "text/html");
+    if (sdOk() && SD.exists(SD_ROOT "/www/index.html")) {
+      r->send(SD, SD_ROOT "/www/index.html", "text/html");
     } else {
       r->send_P(200, "text/html", (const uint8_t*)PORTAL_HTML, strlen(PORTAL_HTML));
     }
@@ -110,8 +110,8 @@ void webBegin() {
 
   // --- игры и ассеты с SD ---
   if (sdOk()) {
-    server.serveStatic("/g/", SD, "/games/").setDefaultFile("index.html").setCacheControl("max-age=300");
-    server.serveStatic("/assets/", SD, "/www/assets/").setCacheControl("max-age=300");
+    server.serveStatic("/g/", SD, SD_ROOT "/games/").setDefaultFile("index.html").setCacheControl("max-age=300");
+    server.serveStatic("/assets/", SD, SD_ROOT "/www/assets/").setCacheControl("max-age=300");
   }
 
   // --- вход / регистрация ---

@@ -15,9 +15,10 @@ bool storageBegin() {
   SPI.begin(SD_SCK, SD_MISO, SD_MOSI, SD_CS);
   gSd = SD.begin(SD_CS, SPI, 25000000);
   if (gSd) {
-    SD.mkdir("/games");
-    SD.mkdir("/data");
-    SD.mkdir("/data/users");
+    SD.mkdir(SD_ROOT);
+    SD.mkdir(SD_ROOT "/games");
+    SD.mkdir(SD_ROOT "/data");
+    SD.mkdir(SD_ROOT "/data/users");
   }
   return gSd;
 }
@@ -31,7 +32,7 @@ uint32_t sdFreeMB() {
 
 void loadConfig() {
   if (!gSd) return;
-  File f = SD.open("/config.json");
+  File f = SD.open(SD_ROOT "/config.json");
   if (!f) return;
   JsonDocument d;
   if (!deserializeJson(d, f)) {
@@ -62,21 +63,21 @@ String gamesJson(bool force) {
   JsonArray arr = doc.to<JsonArray>();
   gGamesN = 0;
   if (gSd) {
-    File root = SD.open("/games");
+    File root = SD.open(SD_ROOT "/games");
     if (root && root.isDirectory()) {
       for (File d = root.openNextFile(); d; d = root.openNextFile()) {
         bool isDir = d.isDirectory();
         String id = String(d.name());
         d.close();
         if (!isDir || !validId(id)) continue;
-        if (!SD.exists("/games/" + id + "/index.html")) continue;
+        if (!SD.exists(SD_ROOT "/games/" + id + "/index.html")) continue;
         JsonObject g = arr.add<JsonObject>();
         g["id"] = id;
         g["title"] = id;
         g["description"] = "";
         g["min"] = 1;
         g["max"] = 1;
-        File m = SD.open("/games/" + id + "/manifest.json");
+        File m = SD.open(SD_ROOT "/games/" + id + "/manifest.json");
         if (m) {
           JsonDocument md;
           if (!deserializeJson(md, m)) {
@@ -106,9 +107,9 @@ int gamesCount() { gamesJson(); return gGamesN; }
 
 int gameMax(const String& id) {
   if (!gSd || !validId(id)) return 0;
-  if (!SD.exists("/games/" + id + "/index.html")) return 0;
+  if (!SD.exists(SD_ROOT "/games/" + id + "/index.html")) return 0;
   int mx = 1;
-  File m = SD.open("/games/" + id + "/manifest.json");
+  File m = SD.open(SD_ROOT "/games/" + id + "/manifest.json");
   if (m) {
     JsonDocument md;
     if (!deserializeJson(md, m)) {

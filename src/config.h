@@ -9,6 +9,7 @@
 #define SD_MISO  39
 #define SD_MOSI  14
 #define SD_CS    12
+#define SD_ROOT  "/l18games"   // все данные на SD-карте лежат в этой папке
 
 #define AP_IP_STR "192.168.4.1"
 

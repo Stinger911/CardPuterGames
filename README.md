@@ -8,17 +8,17 @@ Cardputer поднимает Wi-Fi точку доступа, на любой т
 
 1. Установить [PlatformIO](https://platformio.org/).
 2. `pio run -t upload` (плата `m5stack-stamps3`, Cardputer подключён по USB).
-3. Скопировать содержимое `sdcard_example/` в корень SD-карты (FAT32).
+3. Скопировать содержимое `sdcard_example/` в корень SD-карты (FAT32) — на карте появится папка `/l18games`.
 
 ## Структура SD-карты
 
 ```
-/config.json            необязательно: ssid, pass (>=8 симв. = WPA2), channel, max_clients, allow_guests, allow_register
-/games/<id>/index.html  игра (+ любые файлы рядом: js, css, картинки, .gz подхватывается автоматически)
-/games/<id>/manifest.json   {"title","description","min","max"}  (max > 1 = мультиплеер)
-/www/index.html         необязательно: своя страница портала вместо встроенной
-/www/assets/...         ассеты для неё, доступны по /assets/
-/data/users/*.json      создаётся сервером (логины; пароли — соль + 2000 раундов SHA-256)
+/l18games/config.json            необязательно: ssid, pass (>=8 симв. = WPA2), channel, max_clients, allow_guests, allow_register
+/l18games/games/<id>/index.html  игра (+ любые файлы рядом: js, css, картинки, .gz подхватывается автоматически)
+/l18games/games/<id>/manifest.json   {"title","description","min","max"}  (max > 1 = мультиплеер)
+/l18games/www/index.html         необязательно: своя страница портала вместо встроенной
+/l18games/www/assets/...         ассеты для неё, доступны по /assets/
+/l18games/data/users/*.json      создаётся сервером (логины; пароли — соль + 2000 раундов SHA-256)
 ```
 
 Игры доступны по `http://192.168.4.1/g/<id>/`. Каталог игр строится автоматически (кэш 10 с, клавиша `r` на устройстве — пересканировать).
@@ -42,7 +42,7 @@ Cardputer поднимает Wi-Fi точку доступа, на любой т
 </script>
 ```
 
-Пример — `sdcard_example/games/duel`.
+Пример — `sdcard_example/l18games/games/duel`.
 
 ## HTTP API
 

@@ -91,7 +91,7 @@ function loadGames(cb){
       if(x.max>1)h+='<button class="g" onclick="lobby(\''+e(x.id)+'\')">Найти игроков</button>';
       h+='</div>';
     });
-    $('gl').innerHTML=h||'<div class="card">На SD-карте нет игр (папка /games).</div>';
+    $('gl').innerHTML=h||'<div class="card">На SD-карте нет игр (папка /l18games/games).</div>';
     $('cnt').textContent=g.sd===false?'SD-карта не найдена':'';
     if(cb)cb();
   });
