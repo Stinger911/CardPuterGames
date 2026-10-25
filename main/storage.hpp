@@ -3,6 +3,7 @@
 #include <string>
 
 bool        storageBegin();                     // монтирует SD
+bool        storageRetry();                     // повторное монтирование, если карты не было при старте
 bool        sdOk();
 void        loadConfig();                       // /l18games/config.json (необязательный)
 std::string gamesJson(bool force = false);      // массив игр из /l18games/games/*/manifest.json (кэш 10 с)

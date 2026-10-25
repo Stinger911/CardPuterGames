@@ -29,9 +29,10 @@ static void mkdirp(const char* p) {
   if (mkdir(p, 0775) != 0 && errno != EEXIST) ESP_LOGW(TAG, "mkdir %s: errno %d", p, errno);
 }
 
-bool storageBegin() {
-  const spi_host_device_t host_id = SPI3_HOST;   // LCD сидит на другой шине
-  const int freqs[] = {25000, 20000};
+// 20 МГц — проверенная частота на этой плате (m5sPlaud: 40 МГц на тестовой карте не монтируется); при отказе — 10 МГц.
+static bool mountSd() {
+  const spi_host_device_t host_id = SPI3_HOST;   // LCD сидит на SPI2
+  const int freqs[] = {20000, 10000};
   for (int khz : freqs) {
     spi_bus_config_t bus = {};
     bus.mosi_io_num = SD_MOSI;
@@ -59,18 +60,34 @@ bool storageBegin() {
     err = esp_vfs_fat_sdspi_mount(SD_MOUNT, &host, &slot, &mnt, &card);
     if (err == ESP_OK) {
       ESP_LOGI(TAG, "SD mounted at %d kHz", (int)card->real_freq_khz);
-      gSd = true;
-      break;
+      return true;
     }
     ESP_LOGE(TAG, "SD mount at %d kHz: %s", khz, esp_err_to_name(err));
     spi_bus_free(host_id);
   }
-  if (gSd) {
+  return false;
+}
+
+static void prepareDirs() {
+  {
     mkdirp(SD_ROOT);
     mkdirp(SD_ROOT "/games");
     mkdirp(SD_ROOT "/data");
     mkdirp(SD_ROOT "/data/users");
   }
+}
+
+bool storageBegin() {
+  gSd = mountSd();
+  if (gSd) prepareDirs();
+  return gSd;
+}
+
+// Карту могли вставить позже загрузки (или она долго просыпалась): пробуем снова.
+bool storageRetry() {
+  if (gSd) return true;
+  gSd = mountSd();
+  if (gSd) { prepareDirs(); gamesJson(true); }
   return gSd;
 }
 

@@ -139,6 +139,7 @@ extern "C" void app_main() {
     uint32_t now = millis();
     if (now - lastTick > 2000) {
       lastTick = now;
+      storageRetry();
       lobbyTick();
     }
     if (redraw || now - lastUi > 1000) {
